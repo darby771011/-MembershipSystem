@@ -99,10 +99,7 @@ function Index() {
             {activeTab === 'members' && currentUser.role === 'Admin' && <MemberTab barData={barData} lineData={lineData} chartOptions={chartOptions} members={members} isMobile={isMobile} />}
             {activeTab === 'coaches' && <CoachTab isMobile={isMobile} />}
             {activeTab === 'plans' && <PlanTab isMobile={isMobile} />}
-            
-            {/* 🌟 3. 當選中 products 時，動態渲染 ProductTab 商品管理積木 */}
             {activeTab === 'products' && <ProductTab isMobile={isMobile} />}
-            
             {activeTab === 'settings' && <SettingsTab isMobile={isMobile} setActiveTab={setActiveTab} />}
             {activeTab === 'security' && <SecurityTab />}
           </div>
