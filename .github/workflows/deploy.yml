@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'frontend/**'
-  workflow_dispatch: # 🌟 允許在 GitHub 網頁上手動點擊按鈕觸發部署
+  workflow_dispatch: # 🌟 保留手動觸發按鈕，方便您測試
 
 jobs:
   deploy:
@@ -40,4 +40,4 @@ jobs:
           vercel-project-id: ${{ secrets.PROJECT_ID }}
           vercel-version: latest
           vercel-args: '--prod'
-          working-directory: ./ # 🌟 修正為根目錄，避免 Vercel 找不到路徑
+          working-directory: ./frontend # 🌟 還原回您原本成功的設定（直接進入 frontend 資料夾執行部署）
