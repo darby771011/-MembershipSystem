@@ -6,6 +6,7 @@ import SettingsTab from '../components/SettingsTab'
 import SecurityTab from '../components/SecurityTab'
 import CoachTab from '../components/CoachTab'
 import MemberTab from '../components/MemberTab'
+import PlanTab from '../components/PlanTab' // 🌟 1. 引入全新方案管理積木
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler);
 
@@ -61,32 +62,28 @@ function Index() {
     { id: 'M004', name: '黃大成', email: 'dacheng@example.com', date: '2026-07-04', role: '一般會員', status: '🔴 停權中' }
   ];
 
-  const containerStyle = { display: 'flex', flexDirection: isMobile ? 'column' : 'row', width: '100%', maxWidth: isMobile ? '100%' : '1100px', minHeight: isMobile ? 'auto' : '680px', backgroundColor: '#ffffff', borderRadius: isMobile ? '16px' : '24px', boxShadow: '0 20px 40px -15px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(15, 23, 42, 0.02)', overflow: 'hidden', border: '1px solid #e2e8f0' };
+  const containerStyle = { display: 'flex', flexDirection: isMobile ? 'column' : 'row', width: '100%', maxWidth: '1100px', minHeight: isMobile ? 'auto' : '680px', backgroundColor: '#ffffff', borderRadius: isMobile ? '16px' : '24px', boxShadow: '0 20px 40px -15px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(15, 23, 42, 0.02)', overflow: 'hidden', border: '1px solid #e2e8f0' };
   const sidebarStyle = { width: isMobile ? '100%' : '240px', backgroundColor: '#ffffff', borderRight: isMobile ? 'none' : '1px solid #f1f5f9', borderBottom: isMobile ? '1px solid #f1f5f9' : 'none', padding: isMobile ? '20px' : '40px 24px', display: 'flex', flexDirection: isMobile ? 'row' : 'column', flexWrap: isMobile ? 'wrap' : 'nowrap', gap: '6px', boxSizing: 'border-box' };
   const sidebarItemStyle = (tabName) => ({ padding: '12px 20px', color: activeTab === tabName ? '#4f46e5' : '#64748b', backgroundColor: activeTab === tabName ? '#f5f3ff' : 'transparent', borderRadius: '12px', textDecoration: 'none', fontSize: '14px', fontWeight: '600', transition: 'all 0.2s ease', whiteSpace: 'nowrap', cursor: 'pointer', width: isMobile ? 'auto' : '100%', boxSizing: 'border-box' });
   const contentStyle = { flex: 1, padding: isMobile ? '24px 20px' : '40px', backgroundColor: '#f8fafc', textAlign: 'left', display: 'flex', flexDirection: 'column', boxSizing: 'border-box', gap: '24px' };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', width: '100%' }}>
-      
-      {/* 臨時測試按鈕：方便您即時測試身份切換 */}
-      <button 
-        onClick={toggleTestUser} 
-        style={{ padding: '8px 16px', fontSize: '13px', fontWeight: '700', backgroundColor: '#334155', color: '#ffffff', border: 'none', borderRadius: '8px', cursor: 'pointer', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}
-      >
+      <button onClick={toggleTestUser} style={{ padding: '8px 16px', fontSize: '13px', fontWeight: '700', backgroundColor: '#334155', color: '#ffffff', border: 'none', borderRadius: '8px', cursor: 'pointer', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
         🔄 切換測試身份 (目前：{currentUser.name} - {currentUser.role === 'Admin' ? '超級管理員' : '一般會員'})
       </button>
 
       <div style={containerStyle}>
         <div style={sidebarStyle}>
           <div style={sidebarItemStyle('overview')} onClick={() => setActiveTab('overview')}>📊 系統總覽</div>
-          
-          {/* 🌟 核心權限防禦：只有 currentUser.role === 'Admin' 才能看到這個選單按鈕！ */}
           {currentUser.role === 'Admin' && (
             <div style={sidebarItemStyle('members')} onClick={() => setActiveTab('members')}>👥 會員分析</div>
           )}
-          
           <div style={sidebarItemStyle('coaches')} onClick={() => setActiveTab('coaches')}>🏋️ 教練名單</div>
+          
+          {/* 🌟 2. 側邊欄增加「💎 方案設定」分頁選單按鈕 */}
+          <div style={sidebarItemStyle('plans')} onClick={() => setActiveTab('plans')}>💎 方案設定</div>
+          
           <div style={sidebarItemStyle('settings')} onClick={() => setActiveTab('settings')}>👤 帳戶設定</div>
           <div style={sidebarItemStyle('security')} onClick={() => setActiveTab('security')}>🔒 安全權限</div>
           <div style={{ marginLeft: isMobile ? 'auto' : '0', marginTop: isMobile ? '0' : 'auto', borderTop: isMobile ? 'none' : '#f1f5f9 1px solid', paddingTop: isMobile ? '0' : '20px', width: isMobile ? '100%' : 'auto' }}>
@@ -99,6 +96,10 @@ function Index() {
             {activeTab === 'overview' && <OverviewTab userName={currentUser.name} />}
             {activeTab === 'members' && currentUser.role === 'Admin' && <MemberTab barData={barData} lineData={lineData} chartOptions={chartOptions} members={members} isMobile={isMobile} />}
             {activeTab === 'coaches' && <CoachTab isMobile={isMobile} />}
+            
+            {/* 🌟 3. 當選中 plans 時，動態渲染 PlanTab 方案管理積木 */}
+            {activeTab === 'plans' && <PlanTab isMobile={isMobile} />}
+            
             {activeTab === 'settings' && <SettingsTab isMobile={isMobile} setActiveTab={setActiveTab} />}
             {activeTab === 'security' && <SecurityTab />}
           </div>
