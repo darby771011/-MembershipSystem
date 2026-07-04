@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24 # 🌟 順便升級到 Node 24 確保相容性
           cache: 'npm'
           cache-dependency-path: 'frontend/package-lock.json'
 
@@ -37,5 +37,6 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.ORG_ID }}
           vercel-project-id: ${{ secrets.PROJECT_ID }}
+          vercel-version: latest # 🌟 關鍵核心修正：強迫機器人抓最新版 Vercel CLI
           vercel-args: '--prod'
           working-directory: ./frontend
