@@ -6,7 +6,8 @@ import SettingsTab from '../components/SettingsTab'
 import SecurityTab from '../components/SecurityTab'
 import CoachTab from '../components/CoachTab'
 import MemberTab from '../components/MemberTab'
-import PlanTab from '../components/PlanTab' // 🌟 1. 引入全新方案管理積木
+import PlanTab from '../components/PlanTab'
+import ProductTab from '../components/ProductTab' // 🌟 1. 引入全新商品管理積木
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler);
 
@@ -80,9 +81,10 @@ function Index() {
             <div style={sidebarItemStyle('members')} onClick={() => setActiveTab('members')}>👥 會員分析</div>
           )}
           <div style={sidebarItemStyle('coaches')} onClick={() => setActiveTab('coaches')}>🏋️ 教練名單</div>
-          
-          {/* 🌟 2. 側邊欄增加「💎 方案設定」分頁選單按鈕 */}
           <div style={sidebarItemStyle('plans')} onClick={() => setActiveTab('plans')}>💎 方案設定</div>
+          
+          {/* 🌟 2. 側邊欄增加「📦 商品管理」分頁選單按鈕 */}
+          <div style={sidebarItemStyle('products')} onClick={() => setActiveTab('plans' === 'products' ? 'overview' : 'products')}>📦 商品管理</div>
           
           <div style={sidebarItemStyle('settings')} onClick={() => setActiveTab('settings')}>👤 帳戶設定</div>
           <div style={sidebarItemStyle('security')} onClick={() => setActiveTab('security')}>🔒 安全權限</div>
@@ -96,9 +98,10 @@ function Index() {
             {activeTab === 'overview' && <OverviewTab userName={currentUser.name} />}
             {activeTab === 'members' && currentUser.role === 'Admin' && <MemberTab barData={barData} lineData={lineData} chartOptions={chartOptions} members={members} isMobile={isMobile} />}
             {activeTab === 'coaches' && <CoachTab isMobile={isMobile} />}
-            
-            {/* 🌟 3. 當選中 plans 時，動態渲染 PlanTab 方案管理積木 */}
             {activeTab === 'plans' && <PlanTab isMobile={isMobile} />}
+            
+            {/* 🌟 3. 當選中 products 時，動態渲染 ProductTab 商品管理積木 */}
+            {activeTab === 'products' && <ProductTab isMobile={isMobile} />}
             
             {activeTab === 'settings' && <SettingsTab isMobile={isMobile} setActiveTab={setActiveTab} />}
             {activeTab === 'security' && <SecurityTab />}
