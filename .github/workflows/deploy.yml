@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'frontend/**'
-  workflow_dispatch: # 🌟 保留手動觸發按鈕，方便您測試
+  workflow_dispatch: # 保留手動觸發按鈕
 
 jobs:
   deploy:
@@ -32,12 +32,14 @@ jobs:
           cd frontend
           npm run build
 
-      - name: Push to Vercel Production
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.ORG_ID }}
-          vercel-project-id: ${{ secrets.PROJECT_ID }}
-          vercel-version: latest
-          vercel-args: '--prod'
-          working-directory: ./frontend # 🌟 還原回您原本成功的設定（直接進入 frontend 資料夾執行部署）
+      # 🌟 改用官方提供的標準 Vercel CLI 部署，徹底杜絕第三方套件的路徑地獄
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./frontend
+
+      - name: Deploy Project to Vercel
+        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./frontend
