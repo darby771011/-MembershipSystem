@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'frontend/**'
+  workflow_dispatch: # 🌟 允許在 GitHub 網頁上手動點擊按鈕觸發部署
 
 jobs:
   deploy:
@@ -39,4 +40,4 @@ jobs:
           vercel-project-id: ${{ secrets.PROJECT_ID }}
           vercel-version: latest
           vercel-args: '--prod'
-          working-directory: ./ # 👈 修正這裡，改為根目錄
+          working-directory: ./ # 🌟 修正為根目錄，避免 Vercel 找不到路徑
